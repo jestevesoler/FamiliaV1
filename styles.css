@@ -1,0 +1,15 @@
+body{
+  font-family: 'Arial';
+}
+
+ul {
+	list-style: none;
+}
+
+#navigation {
+	margin: 40px 0;
+	font: bold 12px/18px "Helvetica Neue", Helvetica, Arial, sans-serif;
+	text-transform: uppercase;
+	color: #444;
+}
+

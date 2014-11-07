@@ -1,0 +1,65 @@
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600' rel='stylesheet' type='text/css'>
+
+<link rel="stylesheet" href="nuevo.css">
+<link href="//netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css" rel="stylesheet">
+<script type="text/javascript" src="/HelloWorld/main.js"></script>
+
+<div class="testbox">
+  <h1 id="arriba">Persona <img class="thumb"/> </h1>
+
+  <input type="file" id="files" name="files[]" />
+  <br />
+  <output id="list"></output>
+  <hr></hr>
+  <form action="/">
+
+
+  <label id="icon" for="name"><i  class="icon-user"></i></label>
+  <input type="text" name="name" id="name" placeholder="Nombre" required/>
+  <input type="text" name="name" id="name" placeholder="Apellidos" required/>
+  <label id="icon" for="name"><i  class="icon-eye-open"></i></label>
+  <input type="date" name="name" id="name" required/>
+  <label id="icon" for="name"><i  class="icon-eye-close"></i></label>
+  <input type="date" name="name" id="name" required/>
+  <label id="icon" for="name"><i class="icon-map-marker"></i></label>
+  <input type="text" name="name" id="name" placeholder="De..." required/>
+
+  <div class="gender">
+    <input type="radio" value="None" id="hombre" name="genero" checked/>
+    <label for="hombre" class="radio" chec>Hombre</label>
+    <input type="radio" value="None" id="mujer" name="genero" />
+    <label for="mujer" class="radio">Mujer</label>
+   </div>
+   <hr></hr>
+   <a href="#" class="button">Guardar</a>
+  </form>
+
+  <script>
+    function archivo(evt) {
+      var files = evt.target.files; // FileList object
+
+        //Obtenemos la imagen del campo "file".
+      for (var i = 0, f; f = files[i]; i++) {
+           //Solo admitimos imágenes.
+           if (!f.type.match('image.*')) {
+                continue;
+           }
+
+           var reader = new FileReader();
+
+           reader.onload = (function(theFile) {
+               return function(e) {
+               // Creamos la imagen.
+
+                  document.getElementById("arriba").innerHTML = ['Persona <img class="thumb" src="', e.target.result,'" title="', escape(theFile.name), '"/>'].join('');
+               };
+           })(f);
+
+           reader.readAsDataURL(f);
+       }
+    }
+
+    document.getElementById('files').addEventListener('change', archivo, false);
+
+  </script>
+</div>
