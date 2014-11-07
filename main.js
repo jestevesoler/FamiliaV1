@@ -1,6 +1,6 @@
 $(document).ready(function (){
   $("#btnFam").click(function(){
-    alert("FAMILIA");
+    crearTabla('#miapp');
   });
 
   $("#btnNuevo").click(function(){
@@ -8,7 +8,11 @@ $(document).ready(function (){
   });
 
   $("#btnArbol").click(function(){
-    retornarArbol('#miapp', 4);
+    crearArbol('#miapp', 4);
+  });
+
+  $("#btnBuscar").click(function(){
+    iniciaBusqueda('#opciones');
   });
 
 });
@@ -34,10 +38,10 @@ return xmlHttp;
 }
 /* FIN carga url en contenedor*/
 
-/* Retorna arbol en cuadricula de col columnas en contenedor id*/
-function retornarArbol(id, col)
+/* Crea arbol en cuadricula de col columnas en contenedor id*/
+function crearArbol(id, col)
 {
-    $(id).html = '';
+    $(id).html("");
     var graph = new joint.dia.Graph;
     /*Fondo para graficos*/
     var paper = new joint.dia.Paper({
@@ -58,8 +62,7 @@ function retornarArbol(id, col)
         });
 
     }).error(function(jqXHR, textStatus, errorThrown){ /* assign handler */
-    /* alert(jqXHR.responseText) */
-      alert("error occurred!");
+      alert("ERROR!");
     });
 }
 
@@ -68,9 +71,59 @@ function nuevaCaja(nombre, apellidos, i, col) {
   var rect = new joint.shapes.basic.Rect({
     position: { x: 50+((i%col)*160), y: 30 + (Math.trunc(i/col)*65) },
     size: { width: 150, height: 60 },
-    attrs: { rect: { fill: 'white' }, text: { text: nombre + "\n" +apellidos, fill: 'black' } }
+    attrs: { rect: { fill: 'white' }, text: { text: nombre + "\n" +apellidos, fill: 'gray' } }
   });
 
   return rect;
 }
 /* FIN Retorna arbol en cuadricula */
+
+/* Crear tabla con familia*/
+function crearTabla(id)
+{
+  var htmlString = "";
+
+  $.getJSON("Personas.json", function(data){
+      htmlString = "<table class=\"tablesorter\" id=\"familia\">";
+      htmlString = htmlString + '<thead> <tr> <th scope=\"col\"> Nombre </th><th scope=\"col\"> Apellidos </th><th scope=\"col\"> F.Nac </th><th scope=\"col\"> F.Dec </th><th scope=\"col\"> De </th></tr></thead> <tbody> ';
+      $.each(data, function(index, d){
+
+          htmlString = htmlString + "<tr><td class=\"nombre\">"+d.Nombre+"</td>";
+          htmlString = htmlString + "<td class=\"apellidos\">"+d.Apellidos+"</td>";
+          htmlString = htmlString + "<td>"+d.FNac+"</td>";
+          htmlString = htmlString + "<td>"+d.FDec+"</td>";
+          htmlString = htmlString + "<td class=\"de\">"+d.De+"</td>";
+          htmlString = htmlString + "</tr>";
+        });
+      htmlString = htmlString + "</tbody> </table>";
+      $( id ).html( htmlString );
+      $("#familia").tablesorter({headerTemplate: '{content}{icon}'});
+    }).error(function(jqXHR, textStatus, errorThrown){ /* assign handler */
+      alert("ERROR!");
+    });
+
+}
+
+/* FIN crear tabla con familia*/
+
+/* Busqueda */
+function iniciaBusqueda(id)
+{
+  $(id).html("<form id=\"fbuscar\"> <input id=\"edbuscar\" class=\"text\"> </form>");
+  crearTabla('#miapp');
+  $("#edbuscar").keyup(function(){
+    filtrarTabla($("#edbuscar").val());
+  });
+}
+
+function filtrarTabla(textobus)
+{
+  $("#familia tr").hide();
+  $("#familia th").show();
+
+  $("#familia tr td.nombre").not(":Contains('"+(textobus).toUpperCase()+"')").parent().show();
+}
+
+
+/* FIN Busqueda */
+
