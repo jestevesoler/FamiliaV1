@@ -5,6 +5,18 @@ $(document).ready(function (){
 
   $("#btnNuevo").click(function(){
     carga('nuevo.html', 'miapp');
+
+        $("#miapp").dialog({
+            width: 590,
+            height: 350,
+            show: "scale",
+            hide: "scale",
+            resizable: "false",
+            position: "center",
+            modal: "true"
+        });
+
+
   });
 
   $("#btnArbol").click(function(){
@@ -57,18 +69,28 @@ function crearArbol(id, col)
     $.getJSON("Personas.json", function(data){
 
        $.each(data, function(index, d){
-          graph.addCells([nuevaCaja(d.Nombre, d.Apellidos, i, col)]);
+          graph.addCells([nuevaCaja(d.Nombre, d.Apellidos, i, col, d.id)]);
           i++;
         });
-
     }).error(function(jqXHR, textStatus, errorThrown){ /* assign handler */
       alert("ERROR!");
     });
+
+  /*  $.ajaxSetup({ cache: false });
+    $.getJSON("relaciones.json", function(data){
+       $.each(data, function(index, d){
+        var link = matrimonio($("g[model-id='p"+ d.P1 +"']"), $("g[model-id='p"+ d.P2 +"']"));
+        graph.addCells([link]);
+        });
+    }).error(function(jqXHR, textStatus, errorThrown){
+      alert("ERROR!");
+    });*/
 }
 
-function nuevaCaja(nombre, apellidos, i, col) {
+function nuevaCaja(nombre, apellidos, i, col, id) {
 
   var rect = new joint.shapes.basic.Rect({
+    id : "p"+id,
     position: { x: 50+((i%col)*160), y: 30 + (Math.trunc(i/col)*65) },
     size: { width: 150, height: 60 },
     attrs: { rect: { fill: 'white' }, text: { text: nombre + "\n" +apellidos, fill: 'gray' } }
@@ -76,7 +98,31 @@ function nuevaCaja(nombre, apellidos, i, col) {
 
   return rect;
 }
-/* FIN Retorna arbol en cuadricula */
+
+/* Casa a dos personas en el arbol*/
+function matrimonio(p1, p2)
+{
+  var link = new joint.dia.Link({
+        source: {  id : p1.attr("id") },
+        target: {  id : p2.attr("id") }
+    });
+
+    return link;
+}
+/* FIN Casa a dos personas en el arbol*/
+
+/* Afilia a dos personas en el arbol*/
+function filiacion(p1, p2)
+{
+
+  var link = new joint.dia.Link({
+        source: { id: p1.attr("id") },
+        target: { id: p2.attr("id") }
+    });
+
+    return link;
+}
+/* FIN Afilia a dos personas en el arbol*/
 
 /* Crear tabla con familia*/
 function crearTabla(id)
@@ -95,9 +141,11 @@ function crearTabla(id)
           htmlString = htmlString + "<td class=\"de\">"+d.De+"</td>";
           htmlString = htmlString + "</tr>";
         });
-      htmlString = htmlString + "</tbody> </table>";
+      htmlString = htmlString + "</tbody></table>";
+      //htmlString = htmlString + "</tbody></table> <script>$('table').filterTable(inputSelector: \'#input-filter\'); </script>";
       $( id ).html( htmlString );
       $("#familia").tablesorter({headerTemplate: '{content}{icon}'});
+      $("#familia").filterTable({inputSelector: '#input-filter'});
     }).error(function(jqXHR, textStatus, errorThrown){ /* assign handler */
       alert("ERROR!");
     });
@@ -109,21 +157,15 @@ function crearTabla(id)
 /* Busqueda */
 function iniciaBusqueda(id)
 {
-  $(id).html("<form id=\"fbuscar\"> <input id=\"edbuscar\" class=\"text\"> </form>");
+  $(id).html("<label id=\"icon\" for=\"name\"><i  class=\"icon-search\"></i></label><input id=\"input-filter\" type=\"search\"></input>");
   crearTabla('#miapp');
-  $("#edbuscar").keyup(function(){
-    filtrarTabla($("#edbuscar").val());
-  });
+
 }
 
-function filtrarTabla(textobus)
-{
-  $("#familia tr").hide();
-  $("#familia th").show();
 
-  $("#familia tr td.nombre").not(":Contains('"+(textobus).toUpperCase()+"')").parent().show();
-}
 
 
 /* FIN Busqueda */
+
+
 

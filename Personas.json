@@ -8,7 +8,7 @@
 		{"id":6, "Nombre":"Susana", "Apellidos":"Raya Zapata","FNac":"11/01/1978", "FDec":null, "De":"Valencia"},
 		{"id":7, "Nombre":"Antoni", "Apellidos":"Esteve Raya","FNac":"13/02/2012", "FDec":null, "De":"Valencia"},
 		{"id":8, "Nombre":"Javier", "Apellidos":"Esteve Raya","FNac":"04/05/2014", "FDec":null, "De":"Valencia"},
-		{"id":9, "Nombre":"Borja", "Apellidos":"Esteve Molner","FNac":"4/12/1998", "FDec":null, "De":"Valencia"},
+		{"id":9, "Nombre":"Borja", "Apellidos":"Esteve Molner","FNac":"04/12/1998", "FDec":null, "De":"Valencia"},
 		{"id":10, "Nombre":"Mar", "Apellidos":"Esteve Molner","FNac":"19/11/2005", "FDec":null, "De":"Valencia"},
 		{"id":11, "Nombre":"Brigida", "Apellidos":"Blasco Blasco","FNac":1911, "FDec":"14/08/1997", "De":"Arcos de las Salinas"},
 		{"id":12, "Nombre":"Vicente", "Apellidos":"Soler Olmos","FNac":1905, "FDec":"14/08/1963", "De":"Valencia"},
